@@ -72,7 +72,7 @@ export type AmountConfig =
 // token deployed to single chain
 export interface Token {
   id: string
-  ticker: string
+  symbol: string
   amount: AmountFormula
   // we need this formula to handle relations between tokens on the same chain
   valueForProject?: Formula
@@ -83,6 +83,14 @@ export interface Token {
   category: 'ether' | 'stablecoin' | 'other'
   source: 'canonical' | 'external' | 'native'
   isAssociated: boolean
+}
+
+export function isEscrowToken(token: Token): token is EscrowToken {
+  return token.amount.type === 'balanceOfEscrow'
+}
+
+export type EscrowToken = Token & {
+  amount: BalanceOfEscrowAmountFormula
 }
 
 export type PriceSources = Map<string, PriceSource[]>

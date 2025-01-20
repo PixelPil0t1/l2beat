@@ -25,7 +25,7 @@ export class ValueService {
         const value = await this.executeValueFormula(
           {
             amount: token.amount,
-            ticker: token.ticker,
+            ticker: token.symbol,
           } as ValueFormula,
           timestamp,
         )
