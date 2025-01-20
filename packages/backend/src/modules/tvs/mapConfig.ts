@@ -29,10 +29,10 @@ export function mapConfig(project: BackendProject, chain: string): TvsConfig {
         )
       }
 
-      const exisitingToken = tokens.get(legacyToken.id)
+      const existingToken = tokens.get(legacyToken.id)
 
-      if (exisitingToken) {
-        updateToken(exisitingToken, escrow)
+      if (existingToken) {
+        updateToken(existingToken, escrow)
       } else {
         const token = createToken(legacyToken, escrow, project, chain)
         tokens.set(token.id, token)
