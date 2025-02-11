@@ -1,6 +1,7 @@
 'use client'
 
 import * as TabsPrimitive from '@radix-ui/react-tabs'
+import { useQueryState } from 'nuqs'
 import * as React from 'react'
 import { useTracking } from '~/hooks/use-custom-event'
 import { cn } from '~/utils/cn'
@@ -17,12 +18,17 @@ const DirectoryTabs = ({
   ...props
 }: React.ComponentProps<typeof TabsPrimitive.Root>) => {
   const { track } = useTracking()
+  const [tab, setTab] = useQueryState('tab', {
+    defaultValue: defaultValue ?? '',
+  })
+
   return (
     <TabsPrimitive.Root
       ref={ref}
-      defaultValue={defaultValue}
-      onValueChange={(value) => {
+      defaultValue={tab}
+      onValueChange={async (value) => {
         onValueChange?.(value)
+        await setTab(value)
         track('directoryTabsChanged', {
           props: {
             value,

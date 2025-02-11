@@ -11,6 +11,7 @@ import { GlossaryContextProvider } from '../components/markdown/glossary-context
 import { ProgressBar } from '../components/progress-bar'
 import { roboto } from '../fonts'
 import '../styles/globals.css'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { RecategorisationPreviewContextProvider } from '~/components/recategorisation-preview/recategorisation-preview-provider'
 
 export const metadata: Metadata = getDefaultMetadata()
@@ -47,21 +48,23 @@ export default async function RootLayout({
             disableTransitionOnChange
           >
             <PlausibleProvider>
-              <TooltipProvider delayDuration={300} disableHoverableContent>
-                <GlossaryContextProvider
-                  terms={terms.map((term) => ({
-                    id: term.id,
-                    matches: [term.data.term, ...(term.data.match ?? [])],
-                  }))}
-                >
-                  <SearchBarContextProvider projects={searchBarProjects}>
-                    <RecategorisationPreviewContextProvider>
-                      {children}
-                    </RecategorisationPreviewContextProvider>
-                  </SearchBarContextProvider>
-                  <ProgressBar />
-                </GlossaryContextProvider>
-              </TooltipProvider>
+              <NuqsAdapter>
+                <TooltipProvider delayDuration={300} disableHoverableContent>
+                  <GlossaryContextProvider
+                    terms={terms.map((term) => ({
+                      id: term.id,
+                      matches: [term.data.term, ...(term.data.match ?? [])],
+                    }))}
+                  >
+                    <SearchBarContextProvider projects={searchBarProjects}>
+                      <RecategorisationPreviewContextProvider>
+                        {children}
+                      </RecategorisationPreviewContextProvider>
+                    </SearchBarContextProvider>
+                    <ProgressBar />
+                  </GlossaryContextProvider>
+                </TooltipProvider>
+              </NuqsAdapter>
             </PlausibleProvider>
           </ThemeProvider>
         </TRPCReactProvider>
